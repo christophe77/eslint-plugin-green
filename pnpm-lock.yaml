@@ -4,16 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  eslint-plugin-green: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
-
 importers:
 
   .:
-    dependencies:
-      eslint-plugin-green:
-        specifier: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
-        version: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
     devDependencies:
       '@types/eslint':
         specifier: ^9.6.1
@@ -36,6 +29,9 @@ importers:
       eslint:
         specifier: ^8.55.0
         version: 8.57.1
+      husky:
+        specifier: ^8.0.3
+        version: 8.0.3
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.17.28)
@@ -868,6 +864,11 @@ packages:
   human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+
+  husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -2576,6 +2577,8 @@ snapshots:
   html-escaper@2.0.2: {}
 
   human-signals@2.1.0: {}
+
+  husky@8.0.3: {}
 
   ignore@5.3.2: {}
 

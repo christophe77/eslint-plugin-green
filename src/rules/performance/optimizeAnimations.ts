@@ -21,14 +21,37 @@ const rule: Rule.RuleModule = {
             
             // Check for setInterval usage in animations
             if (methodName === 'setInterval') {
-              const parent = context.getAncestors().pop();
-              if (parent?.type === 'CallExpression' && 
-                  (parent as CallExpression).callee.type === 'MemberExpression' &&
-                  ((parent as CallExpression).callee as MemberExpression).property.type === 'Identifier' &&
-                  (((parent as CallExpression).callee as MemberExpression).property as Identifier).name === 'style') {
+              // Check if this is part of a style animation
+              const ancestors = context.getAncestors();
+              const parent = ancestors[ancestors.length - 1];
+              const isStyleAnimation = parent?.type === 'CallExpression' && 
+                (parent as CallExpression).callee.type === 'MemberExpression' &&
+                ((parent as CallExpression).callee as MemberExpression).property.type === 'Identifier' &&
+                (((parent as CallExpression).callee as MemberExpression).property as Identifier).name === 'style';
+
+              // Only report if it's a style animation
+              if (isStyleAnimation) {
                 context.report({
                   node,
                   message: 'Use requestAnimationFrame instead of setInterval for animations to reduce CPU usage'
+                });
+              }
+            }
+
+            // Check for requestAnimationFrame usage
+            if (methodName === 'requestAnimationFrame') {
+              const ancestors = context.getAncestors();
+              const parent = ancestors[ancestors.length - 1];
+              const isAnimation = parent?.type === 'CallExpression' && 
+                (parent as CallExpression).callee.type === 'MemberExpression' &&
+                ((parent as CallExpression).callee as MemberExpression).property.type === 'Identifier' &&
+                (((parent as CallExpression).callee as MemberExpression).property as Identifier).name === 'style';
+
+              // Only report if it's a style animation
+              if (isAnimation) {
+                context.report({
+                  node,
+                  message: 'Consider using CSS animations or transitions for better performance'
                 });
               }
             }
@@ -45,6 +68,7 @@ const rule: Rule.RuleModule = {
             attr.name.name === 'willChange'
           );
 
+          // Only report if transform is present without will-change
           if (hasTransform && !hasWillChange) {
             context.report({
               node,

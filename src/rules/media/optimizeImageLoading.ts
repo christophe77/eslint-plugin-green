@@ -40,10 +40,11 @@ const rule: Rule.RuleModule = {
             attr.name.name === 'sizes'
           );
 
+          // Report if either attribute is missing
           if (!hasLazyLoading) {
             context.report({
               node,
-              message: 'Add loading="lazy" to images below the fold for better energy efficiency'
+              message: 'Add loading="lazy" to images for better energy efficiency'
             });
           }
 
