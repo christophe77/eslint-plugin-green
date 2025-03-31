@@ -1,0 +1,39 @@
+{
+	"name": "eslint-plugin-green",
+	"version": "1.0.0",
+	"description": "ESLint plugin for evaluating and promoting green coding practices",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"test": "jest",
+		"lint": "eslint . --ext .ts",
+		"prepare": "pnpm build"
+	},
+	"keywords": [
+		"eslint",
+		"eslintplugin",
+		"green",
+		"sustainable",
+		"performance",
+		"energy-efficiency"
+	],
+	"author": "",
+	"license": "MIT",
+	"peerDependencies": {
+		"eslint": ">=8.0.0"
+	},
+	"devDependencies": {
+		"@types/eslint": "^9.6.1",
+		"@types/estree": "^1.0.7",
+		"@types/jest": "^29.5.11",
+		"@types/node": "^20.10.4",
+		"@typescript-eslint/eslint-plugin": "^6.13.2",
+		"@typescript-eslint/parser": "^6.13.2",
+		"eslint": "^8.55.0",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.1.1",
+		"typescript": "^5.3.3"
+	},
+	"packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8"
+}
