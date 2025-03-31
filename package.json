@@ -1,7 +1,7 @@
 {
 	"name": "eslint-plugin-green",
-	"version": "1.0.0-alpha.1",
-	"description": "ESLint plugin for evaluating and promoting green coding practices",
+	"version": "1.0.1",
+	"description": "🌱 An ESLint plugin that helps you write more sustainable and energy-efficient code by enforcing green coding practices",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
@@ -16,10 +16,22 @@
 		"green",
 		"sustainable",
 		"performance",
-		"energy-efficiency"
+		"energy-efficiency",
+		"ecofriendly",
+		"carbon-footprint",
+		"optimization",
+		"typescript"
 	],
-	"author": "",
+	"author": "Christophe",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/christophe77/eslint-plugin-green.git"
+	},
+	"bugs": {
+		"url": "https://github.com/christophe77/eslint-plugin-green/issues"
+	},
+	"homepage": "https://github.com/christophe77/eslint-plugin-green#readme",
 	"peerDependencies": {
 		"eslint": ">=8.0.0"
 	},
@@ -36,12 +48,14 @@
 		"typescript": "^5.3.3"
 	},
 	"packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8",
-	"pnpm": {
-		"overrides": {
-			"eslint-plugin-green": "link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green"
-		}
+	"engines": {
+		"node": ">=14.0.0"
 	},
-	"dependencies": {
-		"eslint-plugin-green": "link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green"
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"publishConfig": {
+		"access": "public"
 	}
 }
