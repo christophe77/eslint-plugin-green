@@ -4,9 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  eslint-plugin-green: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
+
 importers:
 
   .:
+    dependencies:
+      eslint-plugin-green:
+        specifier: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
+        version: link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green
     devDependencies:
       '@types/eslint':
         specifier: ^9.6.1

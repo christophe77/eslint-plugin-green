@@ -1,6 +1,6 @@
 {
 	"name": "eslint-plugin-green",
-	"version": "1.0.0",
+	"version": "1.0.0-alpha.1",
 	"description": "ESLint plugin for evaluating and promoting green coding practices",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -35,5 +35,13 @@
 		"ts-jest": "^29.1.1",
 		"typescript": "^5.3.3"
 	},
-	"packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8"
+	"packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8",
+	"pnpm": {
+		"overrides": {
+			"eslint-plugin-green": "link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green"
+		}
+	},
+	"dependencies": {
+		"eslint-plugin-green": "link:../../Users/Christophe/AppData/Local/pnpm/global/5/node_modules/eslint-plugin-green"
+	}
 }
