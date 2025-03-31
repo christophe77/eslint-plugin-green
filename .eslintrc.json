@@ -1,7 +1,4 @@
 {
 	"parser": "@typescript-eslint/parser",
-	"plugins": ["@typescript-eslint", "green"],
-	"rules": {
-		"green/no-inefficient-loops": "warn"
-	}
+	"plugins": ["@typescript-eslint"]
 }
