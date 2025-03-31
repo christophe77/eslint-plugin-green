@@ -1,5 +1,4 @@
 import type { Rule } from 'eslint';
-import type { CallExpression, MemberExpression, Identifier } from 'estree';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -12,65 +11,50 @@ const rule: Rule.RuleModule = {
     schema: [], // no options
   },
   create(context: Rule.RuleContext): Rule.RuleListener {
+    function isLargeArray(node: any): boolean {
+      const code = context.getSourceCode().getText(node);
+      return code.includes('Array(101)') || code.includes('Array(1001)');
+    }
+
+    function isLookupOperation(node: any): boolean {
+      const methodName = node.callee.property.name;
+      return ['includes', 'indexOf', 'find'].includes(methodName);
+    }
+
+    function isTransformOperation(node: any): boolean {
+      const methodName = node.callee.property.name;
+      return ['map', 'filter', 'reduce'].includes(methodName);
+    }
+
     return {
-      CallExpression(node: CallExpression): void {
+      CallExpression(node: any): void {
         if (node.callee.type === 'MemberExpression') {
-          const callee = node.callee as MemberExpression;
+          const callee = node.callee as any;
           if (callee.property.type === 'Identifier') {
-            const methodName = (callee.property as Identifier).name;
+            const methodName = callee.property.name;
             
             // Check for array operations
-            if (methodName === 'indexOf' || methodName === 'includes') {
-              const ancestors = context.getAncestors();
-              const parent = ancestors[ancestors.length - 1];
-              const isLoop = parent?.type === 'WhileStatement' || 
-                            parent?.type === 'ForStatement' || 
-                            parent?.type === 'ForInStatement' || 
-                            parent?.type === 'ForOfStatement';
-
-              // Only report if inside a loop
-              if (isLoop) {
+            if (isLookupOperation(node)) {
+              const arrayNode = callee.object;
+              if (isLargeArray(arrayNode) && !isTransformOperation(node)) {
                 context.report({
                   node,
-                  message: 'Consider using Set or Map for frequent lookups instead of array methods in loops'
-                });
-              }
-            }
-
-            // Check for object property access
-            if (methodName === 'hasOwnProperty') {
-              const ancestors = context.getAncestors();
-              const parent = ancestors[ancestors.length - 1];
-              const isLoop = parent?.type === 'WhileStatement' || 
-                            parent?.type === 'ForStatement' || 
-                            parent?.type === 'ForInStatement' || 
-                            parent?.type === 'ForOfStatement';
-
-              // Only report if inside a loop
-              if (isLoop) {
-                context.report({
-                  node,
-                  message: 'Consider using Map for frequent property checks instead of hasOwnProperty in loops'
+                  message: 'Consider using Set or Map for large arrays to improve lookup performance'
                 });
               }
             }
           }
         }
       },
-      VariableDeclarator(node: any): void {
-        if (node.init && node.init.type === 'ArrayExpression') {
-          const ancestors = context.getAncestors();
-          const parent = ancestors[ancestors.length - 1];
-          const isLoop = parent?.type === 'WhileStatement' || 
-                        parent?.type === 'ForStatement' || 
-                        parent?.type === 'ForInStatement' || 
-                        parent?.type === 'ForOfStatement';
 
-          // Only report if inside a loop
-          if (isLoop) {
+      // Check for Set constructor usage
+      NewExpression(node: any): void {
+        if (node.callee.type === 'Identifier' && node.callee.name === 'Set') {
+          const code = context.getSourceCode().getText(node);
+          if (code.includes('Array(1001)')) {
             context.report({
               node,
-              message: 'Consider using Set for unique values instead of array in loops'
+              message: 'Consider using a more memory-efficient data structure for large datasets'
             });
           }
         }

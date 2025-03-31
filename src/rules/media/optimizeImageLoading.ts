@@ -1,27 +1,27 @@
 import type { Rule } from 'eslint';
-import type { CallExpression, MemberExpression, Identifier, Literal } from 'estree';
 
 const rule: Rule.RuleModule = {
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforce efficient image loading practices',
-      category: 'Media',
+      category: 'Performance',
       recommended: true,
     },
     schema: [], // no options
   },
   create(context: Rule.RuleContext): Rule.RuleListener {
     return {
-      CallExpression(node: CallExpression): void {
+      CallExpression(node: any): void {
         if (node.callee.type === 'MemberExpression') {
-          const callee = node.callee as MemberExpression;
+          const callee = node.callee as any;
           if (callee.property.type === 'Identifier') {
-            const methodName = (callee.property as Identifier).name;
+            const methodName = callee.property.name;
             
             // Check for Image constructor usage
-            if (methodName === 'Image' && callee.object.type === 'Identifier' && 
-                callee.object.name === 'window') {
+            if (methodName === 'Image' && 
+                ((callee.object.type === 'Identifier' && callee.object.name === 'window') || 
+                 callee.object.type === 'Identifier')) {
               context.report({
                 node,
                 message: 'Consider using the native <img> element with loading="lazy" for better energy efficiency'
@@ -32,26 +32,32 @@ const rule: Rule.RuleModule = {
       },
       JSXOpeningElement(node: any): void {
         if (node.name.name === 'img') {
-          const hasLazyLoading = node.attributes.some((attr: any) => 
-            attr.name.name === 'loading' && attr.value.value === 'lazy'
+          const loadingAttr = node.attributes.find((attr: any) => 
+            attr.type === 'JSXAttribute' && 
+            attr.name.name === 'loading'
           );
           
-          const hasSizes = node.attributes.some((attr: any) => 
+          const sizesAttr = node.attributes.find((attr: any) => 
+            attr.type === 'JSXAttribute' && 
             attr.name.name === 'sizes'
           );
 
-          // Report if either attribute is missing
-          if (!hasLazyLoading) {
+          // Check if loading attribute exists and has the correct value
+          const hasCorrectLoading = loadingAttr && loadingAttr.value?.value === 'lazy';
+
+          // Only report if loading is missing or incorrect
+          if (!hasCorrectLoading) {
             context.report({
               node,
               message: 'Add loading="lazy" to images for better energy efficiency'
             });
           }
 
-          if (!hasSizes) {
+          // Only report if sizes is missing
+          if (!sizesAttr) {
             context.report({
               node,
-              message: 'Add sizes attribute to help browser select the right image size'
+              message: 'Add sizes attribute to images for better energy efficiency'
             });
           }
         }
